@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: raw_esg
+    description: Raw World Bank ESG indicator tables loaded from JSON landing files (one table per indicator).
+    schema: raw_esg
+    tables:
+      - name: co2_emissions_per_capita
+      - name: renewable_energy_pct
+      - name: pm25_air_pollution
+      - name: gini_index
+      - name: unemployment_rate
+      - name: life_expectancy
+      # Governance tables (control_of_corruption, regulatory_quality, rule_of_law)
+      # will be added here once the WGI extraction issue is fixed.

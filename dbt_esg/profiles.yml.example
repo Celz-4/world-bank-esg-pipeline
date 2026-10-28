@@ -1,0 +1,14 @@
+# Copy this file to ~/.dbt/profiles.yml (C:\Users\<you>\.dbt\profiles.yml)
+# and put your real Postgres password in. NEVER commit the real file to GitHub.
+dbt_esg:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      port: 5432
+      user: postgres
+      password: YOUR_PASSWORD_HERE
+      dbname: esg_pipeline
+      schema: public
+      threads: 4

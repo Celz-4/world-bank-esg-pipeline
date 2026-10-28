@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: mart_country_esg_trends
+    description: One row per country-year with all ESG indicators. Source for the Power BI dashboard.
+    columns:
+      - name: country_iso3
+        tests: [not_null]
+      - name: country_name
+        tests: [not_null]
+      - name: year
+        tests: [not_null]

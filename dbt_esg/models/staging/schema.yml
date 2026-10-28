@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: stg_co2_emissions_per_capita
+    columns:
+      - name: country_iso3
+        tests: [not_null, iso3_is_valid]
+      - name: year
+        tests: [not_null]
+  - name: stg_renewable_energy_pct
+    columns:
+      - name: country_iso3
+        tests: [not_null, iso3_is_valid]
+      - name: year
+        tests: [not_null]
+  - name: stg_pm25_air_pollution
+    columns:
+      - name: country_iso3
+        tests: [not_null, iso3_is_valid]
+      - name: year
+        tests: [not_null]
+  - name: stg_gini_index
+    columns:
+      - name: country_iso3
+        tests: [not_null, iso3_is_valid]
+      - name: year
+        tests: [not_null]
+  - name: stg_unemployment_rate
+    columns:
+      - name: country_iso3
+        tests: [not_null, iso3_is_valid]
+      - name: year
+        tests: [not_null]
+  - name: stg_life_expectancy
+    columns:
+      - name: country_iso3
+        tests: [not_null, iso3_is_valid]
+      - name: year
+        tests: [not_null]

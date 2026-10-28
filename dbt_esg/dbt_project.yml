@@ -1,0 +1,17 @@
+name: 'dbt_esg'
+version: '1.0.0'
+config-version: 2
+profile: 'esg_pipeline'
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+
+models:
+  dbt_esg:
+    staging:
+      +materialized: view
+      +schema: staging
+    marts:
+      +materialized: table
+      +schema: marts
