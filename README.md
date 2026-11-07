@@ -86,7 +86,7 @@ The dbt tests caught real problems during development. Each one was investigated
 
 - **Symptom:** The first `dbt test` run failed the unique country-year test on 24 groups. The mart had 28,512 rows, and 22,272 of them had a blank `country_iso3`.
 - **Cause:** The API returns four World Bank income groups (High, Upper middle, Lower middle and Low income) with an empty ISO3 code. Joining on that code matched every blank row to every other blank row: 4 rows across 5 tables produced 1,024 rows per year, and 256 for the years where renewable energy data ends. The `not_null` test passed because the blanks were empty strings, not NULLs.
-- **Fix:** Blank codes are filtered in every staging model. A seed (`seeds/aggregate_codes.csv`) lists 43 World Bank regional and income aggregates (such as `WLD`, `EUU` and `OED`) that are excluded in staging, and a custom generic test (`iso3_is_valid`) fails if a country code isn't exactly 3 characters.
+- **Fix:** Blank codes are filtered in every staging model. A seed (`seeds/aggregate_codes.csv`) lists 43 World Bank regional and income aggregates (such as `WLD`, `EUU` and `OED`) that are excluded in staging, and a custom generic test (`iso3_is_valid`) fails if a country code isn't exactly 3 characters. The loader only drops null codes, so empty-string codes reach dbt. The staging filter and the iso3_is_valid test are what catch them.
 - **Result:** The mart dropped to 5,208 rows, which is 217 countries × 24 years.
 
 ### 2. Outlier: Central African Republic life expectancy
@@ -203,7 +203,7 @@ python extraction/load_raw_to_postgres.py 2026-10-02
 
 Before loading, ensure that PostgreSQL is running, the `esg_pipeline` database and `raw_esg` schema exist, and the `DBT_POSTGRES_PASSWORD` environment variable is configured.
 
-The loader flattens the JSON records, excludes records without country ISO3 codes, and writes each indicator to its own table in the `raw_esg` schema.
+The loader flattens the JSON records, drops records where the country ISO3 code is missing (null), and writes each indicator to its own table in the raw_esg schema. Records with an empty-string code are not dropped here. They are loaded as-is and filtered out in the dbt staging models.
 
 **Important:** The loader uses `if_exists="replace"`, meaning existing indicator tables are replaced when the corresponding files are loaded. The extraction script also handles individual indicator failures without necessarily stopping the entire run, so check its output to confirm which indicators were successfully retrieved.
 
